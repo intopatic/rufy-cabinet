@@ -33,8 +33,16 @@ export default function TrialOfferCard({
       className="relative overflow-hidden rounded-3xl text-center"
       style={{
         background: g.cardBg,
-        border: `1px solid ${g.cardBorder}`,
-        boxShadow: g.shadow,
+        border: isDark
+          ? `1px solid ${g.cardBorder}`
+          : isFree
+            ? '1px solid rgba(var(--color-accent-400), 0.2)'
+            : '1px solid rgba(255,184,0,0.2)',
+        boxShadow: isDark
+          ? g.shadow
+          : isFree
+            ? '0 2px 16px rgba(var(--color-accent-400), 0.12), 0 0 0 1px rgba(var(--color-accent-400), 0.06)'
+            : '0 2px 16px rgba(255,184,0,0.12), 0 0 0 1px rgba(255,184,0,0.06)',
         padding: '32px 28px 28px',
       }}
     >
@@ -47,7 +55,7 @@ export default function TrialOfferCard({
           height: 300,
           borderRadius: '50%',
           background: isFree
-            ? 'radial-gradient(circle, rgba(62,219,176,0.08) 0%, transparent 70%)'
+            ? 'radial-gradient(circle, rgba(var(--color-accent-400), 0.08) 0%, transparent 70%)'
             : 'radial-gradient(circle, rgba(255,184,0,0.07) 0%, transparent 70%)',
           transition: 'background 0.5s ease',
         }}
@@ -55,10 +63,14 @@ export default function TrialOfferCard({
       />
       {/* Grid pattern */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          opacity: isDark ? 0.025 : 0.04,
+          backgroundImage: isDark
+            ? `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`
+            : `linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
         aria-hidden="true"
@@ -68,10 +80,16 @@ export default function TrialOfferCard({
       <div
         className="relative mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl"
         style={{
-          background: isFree
-            ? 'linear-gradient(135deg, #1a3a30, #142824)'
-            : 'linear-gradient(135deg, #3a3020, #282418)',
-          border: isFree ? '1px solid rgba(62,219,176,0.2)' : '1px solid rgba(255,184,0,0.2)',
+          background: isDark
+            ? isFree
+              ? 'linear-gradient(135deg, rgba(var(--color-accent-900), 0.5), rgba(var(--color-accent-950), 0.6))'
+              : 'linear-gradient(135deg, #3a3020, #282418)'
+            : isFree
+              ? 'linear-gradient(135deg, rgba(var(--color-accent-400), 0.15), rgba(var(--color-accent-400), 0.08))'
+              : 'linear-gradient(135deg, rgba(255,184,0,0.15), rgba(255,184,0,0.08))',
+          border: isFree
+            ? '1px solid rgba(var(--color-accent-400), 0.25)'
+            : '1px solid rgba(255,184,0,0.25)',
           transition: 'all 0.5s ease',
         }}
       >
@@ -81,7 +99,7 @@ export default function TrialOfferCard({
             height="26"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#3EDBB0"
+            stroke="rgb(var(--color-accent-400))"
             strokeWidth="1.5"
             aria-hidden="true"
           >
@@ -112,7 +130,9 @@ export default function TrialOfferCard({
         <div
           className="absolute inset-[-1px] animate-trial-glow rounded-2xl"
           style={{
-            boxShadow: isFree ? '0 0 20px rgba(62,219,176,0.15)' : '0 0 20px rgba(255,184,0,0.12)',
+            boxShadow: isFree
+              ? '0 0 20px rgba(var(--color-accent-400), 0.15)'
+              : '0 0 20px rgba(255,184,0,0.12)',
           }}
           aria-hidden="true"
         />
@@ -155,7 +175,10 @@ export default function TrialOfferCard({
             value: trialInfo.traffic_limit_gb === 0 ? '∞' : String(trialInfo.traffic_limit_gb),
             label: t('common.units.gb'),
           },
-          { value: String(trialInfo.device_limit), label: t('subscription.trial.devices') },
+          {
+            value: trialInfo.device_limit === 0 ? '∞' : String(trialInfo.device_limit),
+            label: t('subscription.trial.devices'),
+          },
         ].map((stat, i) => (
           <div key={i} className="text-center">
             <div className="text-4xl font-extrabold leading-none tracking-tight text-dark-50">
@@ -229,12 +252,22 @@ export default function TrialOfferCard({
         <button
           onClick={() => !activateTrialMutation.isPending && activateTrialMutation.mutate()}
           disabled={activateTrialMutation.isPending}
-          className="w-full rounded-[14px] py-4 text-base font-bold tracking-tight text-white transition-all duration-300 disabled:opacity-50"
-          style={{
-            background:
-              'linear-gradient(135deg, rgba(62,219,176,0.12) 0%, rgba(62,219,176,0.04) 100%)',
-            border: '1px solid rgba(62,219,176,0.25)',
-          }}
+          className="w-full rounded-[14px] py-4 text-base font-bold tracking-tight transition-all duration-300 disabled:opacity-50"
+          style={
+            isDark
+              ? {
+                  background:
+                    'linear-gradient(135deg, rgba(var(--color-accent-400), 0.12) 0%, rgba(var(--color-accent-400), 0.04) 100%)',
+                  border: '1px solid rgba(var(--color-accent-400), 0.25)',
+                  color: '#fff',
+                }
+              : {
+                  background:
+                    'linear-gradient(135deg, rgb(var(--color-accent-400)), rgb(var(--color-accent-500)))',
+                  color: '#0a2a1e',
+                  boxShadow: '0 4px 20px rgba(var(--color-accent-400), 0.25)',
+                }
+          }
         >
           {activateTrialMutation.isPending ? t('common.loading') : t('subscription.trial.activate')}
         </button>

@@ -44,7 +44,8 @@
     "polls": "问卷",
     "info": "信息",
     "wheel": "幸运转盘",
-    "menu": "菜单"
+    "menu": "菜单",
+    "gift": "赠送"
   },
   "notifications": {
     "ticketNotifications": "工单通知",
@@ -219,7 +220,27 @@
     "noActiveSubscription": "无有效订阅",
     "devicesUsed": "设备：{{used}} / {{total}}",
     "trafficUsed": "流量：{{used}} / {{total}} GB",
-    "unlimitedTraffic": "无限流量"
+    "unlimitedTraffic": "无限流量",
+    "expired": {
+      "title": "订阅已过期",
+      "trialTitle": "试用已过期",
+      "trialSubtitle": "试用期已结束",
+      "paidSubtitle": "订阅已到期",
+      "renew": "续订",
+      "quickRenew": "快速续订",
+      "insufficientFunds": "余额不足",
+      "renewError": "续订失败，请重试",
+      "topUp": "充值",
+      "balance": "余额",
+      "tariffs": "套餐",
+      "traffic": "流量",
+      "devices": "设备",
+      "expiredDate": "过期时间"
+    },
+    "suspended": {
+      "title": "订阅已暂停",
+      "resume": "恢复"
+    }
   },
   "subscription": {
     "title": "订阅",
@@ -276,6 +297,9 @@
     "daysBeforeExpiry": "到期前天数",
     "daysBeforeExpiry_other": "到期前 {{count}} 天",
     "selectPeriod": "选择时长",
+    "noPeriodsAvailable": "没有可用的续订周期",
+    "noPeriodsAvailableHint": "管理员已更改此套餐的设置。请选择其他套餐续订您的订阅。",
+    "chooseDifferentTariff": "选择其他套餐",
     "selectTraffic": "选择流量",
     "selectServers": "选择服务器",
     "selectDevices": "选择设备",
@@ -327,7 +351,10 @@
       "notConfigured": "连接方式尚未配置",
       "notConfiguredUser": "连接设置正在进行中，请稍后再来查看。",
       "notConfiguredAdmin": "尚未配置连接应用。请在应用设置中进行配置。",
-      "goToApps": "前往应用设置"
+      "goToApps": "前往应用设置",
+      "qrTitle": "订阅二维码",
+      "qrScanHint": "使用相机扫描以连接",
+      "qrButton": "二维码"
     },
     "additionalOptions": {
       "title": "附加选项",
@@ -425,6 +452,7 @@
       "nextCharge": "距下次扣费",
       "pauseBtn": "暂停",
       "paused": "已暂停",
+      "suspended": "已暂停（余额不足）",
       "pausedDescription": "扣费已停止。订阅有效期至",
       "pausedInfo": "订阅已暂停",
       "resumeBtn": "恢复",
@@ -508,6 +536,19 @@
     "paymentSuccess": {
       "title": "支付成功",
       "message": "您的余额已成功充值，资金现已可用。"
+    },
+    "topUpResult": {
+      "awaitingPayment": "等待付款",
+      "awaitingPaymentDesc": "我们正在等待您的付款确认。这可能需要几分钟。",
+      "topUpAmount": "充值金额",
+      "success": "充值成功！",
+      "successDesc": "您的余额已成功充值，资金现已可用。",
+      "failed": "付款失败",
+      "failedDesc": "很遗憾，付款未完成。请重试或选择其他付款方式。",
+      "timeout": "处理时间较长",
+      "timeoutDesc": "付款处理时间比平时长。您可以再次检查状态。",
+      "goToBalance": "查看余额",
+      "tryAgain": "重试"
     }
   },
   "referral": {
@@ -533,6 +574,8 @@
     },
     "yourReferrals": "您的推荐",
     "noReferrals": "暂无推荐。分享链接邀请好友！",
+    "anonymousUser": "用户 #{{id}}",
+    "anonymousReferral": "推荐人",
     "user": "用户",
     "joined": "加入时间",
     "hasPaid": "已付款",
@@ -581,6 +624,28 @@
         "tariff": "奖励套餐",
         "tariffDesc": "免费套餐方案"
       },
+      "stats": {
+        "registrations": "注册",
+        "referrals": "推荐",
+        "earnings": "收入",
+        "conversionRate": "转化率",
+        "today": "今天",
+        "week": "本周",
+        "month": "本月",
+        "showDetails": "详情",
+        "hideDetails": "收起",
+        "vsLastWeek": "对比上周",
+        "topReferrals": "热门推荐",
+        "noData": "暂无数据",
+        "dailyChart": "30天趋势",
+        "periodComparison": "周期对比",
+        "noReferrals": "暂无推荐",
+        "paid": "已付款",
+        "pending": "待处理",
+        "active": "活跃",
+        "referralsCount": "推荐数",
+        "earningsAmount": "收入"
+      },
       "fields": {
         "companyName": "公司名称",
         "companyNamePlaceholder": "您的公司或品牌名称",
@@ -591,7 +656,9 @@
         "description": "描述",
         "descriptionPlaceholder": "请介绍您的受众以及推广计划...",
         "expectedReferrals": "预计每月推荐数",
-        "expectedReferralsPlaceholder": "每月预估数量"
+        "expectedReferralsPlaceholder": "每月预估数量",
+        "desiredCommission": "期望佣金比例 (%)",
+        "desiredCommissionPlaceholder": "1 到 100%"
       }
     },
     "withdrawal": {
@@ -612,9 +679,9 @@
       "submitRequest": "提交请求",
       "requestError": "创建提现请求失败，请重试。",
       "fields": {
-        "amount": "金额（戈比）",
-        "amountPlaceholder": "输入金额（戈比）",
-        "amountHint": "请输入戈比金额（100戈比 = 1 {{currency}}）",
+        "amount": "金额",
+        "amountPlaceholder": "输入金额（{{currency}}）",
+        "amountHint": "最低：{{min}} {{currency}}",
         "paymentDetails": "付款信息",
         "paymentDetailsPlaceholder": "银行卡号、钱包地址或其他付款信息..."
       },
@@ -698,7 +765,8 @@
       "cannotSpin": "当前无法抽奖",
       "insufficientBalance": "余额不足",
       "topUpRequired": "请充值以支付抽奖费用",
-      "starsNotAvailable": "Stars支付不可用。请通过Telegram打开应用。"
+      "starsNotAvailable": "Stars支付不可用。请通过Telegram打开应用。",
+      "noSubscription": "需要有效订阅才能转动轮盘。请先激活订阅。"
     },
     "payWithStars": "支付 {stars} Stars",
     "processingPayment": "处理中...",
@@ -835,7 +903,9 @@
       "roles": "角色",
       "roleAssign": "角色分配",
       "policies": "访问策略",
-      "auditLog": "审计日志"
+      "auditLog": "审计日志",
+      "salesStats": "销售统计",
+      "landings": "落地页"
     },
     "panel": {
       "title": "管理面板",
@@ -867,7 +937,88 @@
       "rolesDesc": "管理管理员角色和权限",
       "roleAssignDesc": "分配和撤销用户角色",
       "policiesDesc": "配置ABAC访问控制策略",
-      "auditLogDesc": "查看系统活动和访问历史"
+      "auditLogDesc": "查看系统活动和访问历史",
+      "salesStatsDesc": "销售分析与趋势",
+      "landingsDesc": "快速购买落地页"
+    },
+    "salesStats": {
+      "title": "销售统计",
+      "subtitle": "收入、试用、订阅和续订",
+      "period": {
+        "week": "7天",
+        "month": "30天",
+        "quarter": "90天",
+        "all": "全部",
+        "custom": "自定义"
+      },
+      "tabs": {
+        "trials": "试用",
+        "sales": "销售",
+        "renewals": "续订",
+        "addons": "附加服务",
+        "deposits": "充值"
+      },
+      "summary": {
+        "revenue": "收入",
+        "activeSubs": "活跃订阅",
+        "activeTrials": "活跃试用",
+        "newTrials": "新试用",
+        "conversion": "转化率",
+        "renewals": "续订",
+        "addonRevenue": "附加服务收入"
+      },
+      "trials": {
+        "total": "试用总数",
+        "totalRegistrations": "注册数",
+        "trialsIssued": "已发放试用",
+        "conversion": "转化率",
+        "avgDuration": "平均时长",
+        "byProvider": "按注册来源",
+        "dailyChart": "每日注册与试用",
+        "registrations": "注册"
+      },
+      "sales": {
+        "totalSales": "总销售",
+        "avgOrder": "平均订单",
+        "topTariff": "热门套餐",
+        "byTariff": "按套餐",
+        "byPeriod": "按订阅周期",
+        "dailyChart": "每日销售",
+        "dailyByTariff": "每日按套餐销售",
+        "subscriptions": "订阅"
+      },
+      "renewals": {
+        "total": "续订总数",
+        "rate": "续订率",
+        "revenue": "收入",
+        "comparison": "期间对比",
+        "currentPeriod": "当前期间",
+        "previousPeriod": "上一期间",
+        "dailyChart": "每日续订",
+        "renewals": "续订"
+      },
+      "addons": {
+        "totalPurchases": "购买总数",
+        "totalGb": "总流量",
+        "revenue": "收入",
+        "devicePurchases": "设备购买",
+        "deviceRevenue": "设备收入",
+        "trafficPurchases": "流量",
+        "devicePurchasesDaily": "设备",
+        "byPackage": "按套餐大小",
+        "dailyChart": "每日附加服务购买",
+        "purchases": "购买"
+      },
+      "deposits": {
+        "totalDeposits": "充值总数",
+        "totalAmount": "总金额",
+        "avgDeposit": "平均充值",
+        "byMethod": "按支付方式",
+        "dailyChart": "每日充值",
+        "dailyByMethod": "每日按支付方式充值",
+        "revenue": "收入"
+      },
+      "loadError": "加载统计失败"
     },
     "trafficUsage": {
       "title": "流量使用",
@@ -1257,6 +1408,8 @@
       "darkTheme": "暗色主题",
       "emailAuth": "邮箱认证",
       "emailAuthDesc": "允许通过邮箱登录",
+      "giftEnabled": "赠送订阅",
+      "giftEnabledDesc": "允许用户将订阅作为礼物赠送给其他用户",
       "favoritesEmpty": "暂无收藏",
       "favoritesHint": "点击星标将设置添加到这里",
       "interfaceOptions": "界面选项",
@@ -1266,7 +1419,20 @@
       "projectName": "项目名称",
       "quickPresets": "快速预设",
       "resetAllColors": "重置所有颜色",
-      "statusColors": "状态颜色"
+      "statusColors": "状态颜色",
+      "categories": {
+        "TELEGRAM_WIDGET": "Telegram Login Widget",
+        "TELEGRAM_OIDC": "Telegram Login (OIDC)"
+      },
+      "settingNames": {
+        "Telegram Widget Size": "小部件大小",
+        "Telegram Widget Radius": "圆角半径",
+        "Telegram Widget Userpic": "显示头像",
+        "Telegram Widget Request Access": "请求访问权限",
+        "telegramOidcEnabled": "启用 OIDC",
+        "telegramOidcClientId": "Client ID（机器人 ID）",
+        "telegramOidcClientSecret": "Client Secret"
+      }
     },
     "buttons": {
       "color": "按钮颜色",
@@ -1285,7 +1451,8 @@
         "referral": "推荐",
         "support": "支持",
         "info": "信息",
-        "admin": "管理面板"
+        "admin": "管理面板",
+        "language": "语言"
       },
       "descriptions": {
         "home": "个人中心按钮",
@@ -1294,7 +1461,8 @@
         "referral": "推荐计划",
         "support": "支持工单",
         "info": "信息板块",
-        "admin": "网页管理面板"
+        "admin": "网页管理面板",
+        "language": "机器人语言选择"
       },
       "styles": {
         "default": "无颜色",
@@ -1302,6 +1470,26 @@
         "success": "绿色",
         "danger": "红色"
       }
+    },
+    "menuEditor": {
+      "dragHint": "拖拽行以重新排序",
+      "dragToReorder": "拖拽排序",
+      "row": "行",
+      "addRow": "添加行",
+      "addButton": "添加按钮",
+      "addUrlButton": "URL按钮（链接）",
+      "builtinButtons": "内置栏目",
+      "resetConfirm": "将菜单重置为默认设置？所有更改将丢失。",
+      "buttonTextPlaceholder": "按钮文本",
+      "customLabelsHint": "每种语言的按钮文本",
+      "moveUp": "上移",
+      "moveDown": "下移",
+      "openIn": "打开方式",
+      "openMode": {
+        "external": "外部浏览器",
+        "webapp": "Telegram 小程序"
+      },
+      "invalidUrl": "请为所有自定义按钮提供有效的URL（http:// 或 https://）"
     },
     "apps": {
       "title": "应用管理",
@@ -1478,6 +1666,10 @@
       "noPeriodsHint": "没有添加的周期。请至少添加一个周期。",
       "daysShort": "天",
       "serversTitle": "服务器",
+      "externalSquadTitle": "外部小组",
+      "externalSquadHint": "为此套餐的用户分配RemnaWave外部小组。创建订阅时，用户将自动添加到所选小组。",
+      "noExternalSquad": "无外部小组",
+      "externalSquadUsers": "用户",
       "serversTabHint": "选择此套餐上可用的服务器。",
       "noServersAvailable": "没有可用的服务器",
       "promoGroupsTitle": "促销组",
@@ -1663,7 +1855,15 @@
         "users": "用户",
         "noUsers": "没有注册用户",
         "paid": "已付费",
-        "hasSub": "有订阅"
+        "hasSub": "有订阅",
+        "dailyChart": "30天趋势",
+        "chartRegistrations": "注册",
+        "chartRevenue": "收入",
+        "totalDeposits": "总充值",
+        "totalSpending": "订阅支出",
+        "periodComparison": "期间比较",
+        "vsLastWeek": "与上周对比",
+        "topRegistrations": "热门注册"
       },
       "users": {
         "title": "活动用户",
@@ -1713,7 +1913,8 @@
         "approved": "已批准",
         "rejected": "已拒绝",
         "completed": "已完成",
-        "cancelled": "已取消"
+        "cancelled": "已取消",
+        "unknown": "未知"
       },
       "detail": {
         "title": "提现详情",
@@ -1724,6 +1925,7 @@
         "balance": "余额",
         "totalReferrals": "总推荐数",
         "totalEarnings": "总收益",
+        "requestedAmount": "请求金额",
         "createdAt": "创建时间",
         "paymentDetails": "付款信息",
         "noPaymentDetails": "未提供付款信息",
@@ -1779,7 +1981,8 @@
         "website": "网站",
         "channel": "频道",
         "description": "描述",
-        "expectedReferrals": "预计每月推荐数"
+        "expectedReferrals": "预计每月推荐数",
+        "desiredCommission": "期望佣金"
       },
       "approveDialog": {
         "title": "批准申请",
@@ -2010,6 +2213,7 @@
       "form": {
         "name": "组名称",
         "namePlaceholder": "VIP客户",
+        "nameRequired": "请输入组名称",
         "categoryDiscounts": "分类折扣",
         "periodDiscounts": "期间折扣",
         "add": "添加",
@@ -2021,6 +2225,7 @@
         "rub": "卢布",
         "autoAssignHint": "0 = 不自动分配",
         "applyToAddons": "应用于附加服务",
+        "isDefault": "默认组",
         "cancel": "取消",
         "saving": "保存中...",
         "save": "保存"
@@ -2453,6 +2658,7 @@
           "users": "用户",
           "tickets": "工单",
           "stats": "统计",
+          "sales_stats": "销售统计",
           "broadcasts": "广播",
           "tariffs": "套餐",
           "promocodes": "促销码",
@@ -2475,6 +2681,7 @@
           "apps": "应用",
           "email_templates": "邮件模板",
           "pinned_messages": "置顶消息",
+          "landings": "落地页",
           "updates": "更新"
         },
         "permissionActions": {
@@ -2682,6 +2889,7 @@
       "filters": {
         "title": "筛选",
         "active": "已激活",
+        "user": "用户",
         "action": "操作",
         "actionPlaceholder": "按操作搜索...",
         "resource": "资源类型",
@@ -2740,6 +2948,63 @@
         "loadFailed": "加载审计日志失败",
         "retry": "重试"
       }
+    },
+    "landings": {
+      "title": "落地页",
+      "create": "创建落地页",
+      "edit": "编辑",
+      "slug": "URL标识符",
+      "slugHint": "小写字母、数字和连字符",
+      "pageTitle": "标题",
+      "subtitle": "副标题",
+      "footerText": "底部文本 (HTML)",
+      "features": "功能特点",
+      "addFeature": "添加",
+      "featureIcon": "图标",
+      "featureTitle": "标题",
+      "featureDesc": "描述",
+      "tariffs": "套餐",
+      "selectTariffs": "选择套餐",
+      "periods": "周期",
+      "paymentMethods": "支付方式",
+      "addMethod": "添加方式",
+      "methodId": "方式ID",
+      "methodName": "名称",
+      "methodDesc": "描述",
+      "methodIcon": "图标URL",
+      "gifts": "礼物",
+      "giftEnabled": "礼物购买",
+      "customCss": "CSS",
+      "seo": "SEO",
+      "metaTitle": "Meta标题",
+      "metaDesc": "Meta描述",
+      "active": "已激活",
+      "inactive": "未激活",
+      "purchaseCount": "次购买",
+      "copyUrl": "复制URL",
+      "urlCopied": "URL已复制",
+      "deleteConfirm": "删除落地页「{{title}}」？",
+      "created": "落地页已创建",
+      "updated": "落地页已更新",
+      "deleted": "落地页已删除",
+      "saveOrder": "保存排序",
+      "orderSaved": "排序已保存",
+      "general": "基本设置",
+      "content": "内容",
+      "save": "保存",
+      "back": "返回",
+      "invalidSlug": "Slug只能包含小写字母、数字和连字符",
+      "titleRequired": "标题为必填项",
+      "noTariffs": "请至少选择一个套餐",
+      "noPaymentMethods": "请至少添加一个支付方式",
+      "selectMethods": "选择可用的支付方式",
+      "noSystemMethods": "系统中未配置任何支付方式",
+      "methodOrder": "拖动以调整顺序",
+      "methodSubOptions": "支付子选项",
+      "loadingPeriods": "加载中...",
+      "periodDaySuffix": "天",
+      "localeTab": "语言",
+      "localeHint": "切换语言以编辑该语言的文本"
     }
   },
   "adminUpdates": {
@@ -2911,6 +3176,36 @@
       "promoOffers": "促销活动",
       "promoOffersDesc": "接收特别优惠和折扣",
       "unavailable": "通知设置不可用"
+    },
+    "accounts": {
+      "title": "关联账户",
+      "subtitle": "管理您的登录方式",
+      "linked": "已关联",
+      "notLinked": "未关联",
+      "link": "关联",
+      "unlink": "取消关联",
+      "unlinkConfirm": "确定吗？取消关联后，您将无法通过此服务登录。",
+      "unlinkConfirmBtn": "确认取消关联？",
+      "cannotUnlinkLast": "无法取消最后一种登录方式",
+      "linkSuccess": "账户关联成功",
+      "unlinkSuccess": "账户取消关联成功",
+      "linkError": "关联账户失败",
+      "unlinkError": "取消关联失败",
+      "goToAccounts": "关联账户",
+      "linking": "正在关联账户...",
+      "linkingTelegram": "正在关联 Telegram...",
+      "returnToTelegram": "返回 Telegram 继续操作",
+      "openTelegram": "打开 Telegram",
+      "continueInBrowser": "请在打开的浏览器中继续授权",
+      "pollingTimeout": "授权检查超时。如果您已完成关联，请刷新页面。",
+      "providers": {
+        "telegram": "Telegram",
+        "email": "邮箱",
+        "google": "Google",
+        "yandex": "Yandex",
+        "discord": "Discord",
+        "vk": "VK"
+      }
     }
   },
   "theme": {
@@ -3234,6 +3529,172 @@
       "node": "节点",
       "requests": "请求数",
       "ipHistory": "IP历史"
+    }
+  },
+  "merge": {
+    "title": "合并账户",
+    "description": "此登录方式已关联到另一个账户。您可以将两个账户合并为一个。",
+    "currentAccount": "您的当前账户",
+    "foundAccount": "发现的账户",
+    "authMethods": "登录方式",
+    "subscription": "订阅",
+    "noSubscription": "无订阅",
+    "traffic": "流量",
+    "devices": "设备",
+    "balance": "余额",
+    "until": "至 {{date}}",
+    "keepThisSubscription": "保留此订阅",
+    "chooseSubscription": "选择要保留的订阅",
+    "afterMerge": "合并后",
+    "allAuthMethodsMerged": "所有登录方式将合并",
+    "balanceSummed": "余额：{{amount}} ₽（合计）",
+    "unselectedSubscriptionDeleted": "未选择的订阅将被删除",
+    "historyPreserved": "交易记录将保留",
+    "confirm": "合并账户",
+    "cancel": "取消",
+    "expired": "合并链接已过期，请重试。",
+    "success": "账户合并成功！",
+    "error": "合并失败，请稍后重试。",
+    "expiresIn": "剩余 {{minutes}} 分钟",
+    "merging": "合并中..."
+  },
+  "landing": {
+    "notFound": "页面未找到",
+    "forMe": "为自己",
+    "asGift": "作为礼物",
+    "contactLabel": "您的邮箱或 @用户名",
+    "yourContact": "您的邮箱或 @用户名",
+    "contactPlaceholder": "email@example.com 或 @username",
+    "contactHint": "输入邮箱或 Telegram @用户名",
+    "recipientLabel": "赠送对象",
+    "recipientPlaceholder": "收件人邮箱或 @用户名",
+    "giftMessageLabel": "祝福语（可选）",
+    "giftMessagePlaceholder": "写一段祝福语...",
+    "chooseTariff": "选择套餐",
+    "devices": "设备",
+    "paymentMethod": "支付方式",
+    "processing": "处理中...",
+    "payButton": "支付 {{price}}",
+    "accessFor": "{{period}} 访问权限",
+    "purchaseError": "创建支付失败",
+    "purchaseNotFound": "未找到购买记录",
+    "awaitingPayment": "等待支付",
+    "awaitingPaymentDesc": "请在打开的窗口中完成支付",
+    "purchaseSuccess": "支付成功！",
+    "keySentTo": "订阅密钥已发送至 {{contact}}",
+    "giftSentTo": "礼物已发送至 {{contact}}",
+    "purchaseFailed": "支付失败",
+    "purchaseFailedDesc": "支付未成功，请重试。",
+    "subscriptionLink": "订阅链接",
+    "daysAccess": "天访问权限",
+    "error": "错误",
+    "gb": "GB",
+    "selectedTariff": "套餐",
+    "period": "时长",
+    "total": "总计",
+    "pay": "支付",
+    "choosePeriod": "选择时长",
+    "copy": "复制",
+    "copied": "已复制！",
+    "copyLink": "复制链接",
+    "giftToggleLabel": "购买类型",
+    "pollTimedOut": "处理时间较长",
+    "pollTimedOutDesc": "付款处理时间比平时长。您可以尝试再次检查。",
+    "pendingActivation": "订阅准备激活",
+    "pendingActivationDesc": "您已有活跃订阅。激活新订阅将替换当前订阅。",
+    "activateNow": "立即激活",
+    "activating": "激活中...",
+    "activationFailed": "激活失败",
+    "giftMessage": "留言",
+    "cabinetReady": "您的账户已准备就绪",
+    "cabinetEmail": "邮箱",
+    "cabinetPassword": "密码",
+    "goToCabinet": "前往个人中心",
+    "saveCredentials": "请保存这些登录信息",
+    "credentialsSentToEmail": "登录信息已发送到您的邮箱",
+    "giftSentSuccess": "礼物已发送！",
+    "giftSentDesc": "收件人将通过邮件收到通知",
+    "giftPendingActivationDesc": "收件人已有活跃订阅。他们将收到激活礼物的链接。",
+    "giftTelegramSent": "已通过 Telegram 向收件人发送通知",
+    "giftTelegramNotInBot": "收件人尚未启动机器人。请将此链接发送给他们：",
+    "giftTelegramPendingSent": "已通过 Telegram 向收件人发送激活请求",
+    "giftTelegramPendingNotInBot": "收件人尚未启动机器人。请将机器人链接发送给他们以激活礼物：",
+    "openBot": "打开机器人",
+    "autoLoginFailed": "自动登录失败",
+    "autoLoginProcessing": "正在登录...",
+    "periodLabels": {
+      "d1": "1天",
+      "d2": "2天",
+      "d3": "3天",
+      "d5": "5天",
+      "d7": "1周",
+      "d14": "2周",
+      "d30": "1个月",
+      "d60": "2个月",
+      "d90": "3个月",
+      "d180": "6个月",
+      "d365": "1年",
+      "d456": "1年3个月",
+      "nDays": "{{count}}天",
+      "nMonths": "{{count}}个月"
+    }
+  },
+  "gift": {
+    "title": "赠送订阅",
+    "subtitle": "将VPN订阅作为礼物发送",
+    "choosePeriod": "选择时长",
+    "chooseTariff": "选择套餐",
+    "recipient": "收件人",
+    "recipientPlaceholder": "邮箱或 @telegram",
+    "recipientHint": "输入邮箱或 Telegram 用户名",
+    "giftMessage": "祝福语",
+    "giftMessagePlaceholder": "添加个人消息（可选）",
+    "paymentMode": "支付方式",
+    "fromBalance": "余额支付",
+    "viaGateway": "在线支付",
+    "yourBalance": "您的余额",
+    "insufficientBalance": "余额不足",
+    "topUpBalance": "充值",
+    "total": "合计",
+    "giftButton": "赠送",
+    "sending": "正在发送礼物...",
+    "gb": "GB",
+    "devices": "设备",
+    "paymentMethod": "支付方式",
+    "processing": "处理中...",
+    "successTitle": "礼物已发送！",
+    "successDesc": "收件人 {{contact}} 将收到通知",
+    "pendingTitle": "等待支付",
+    "pendingDesc": "请在支付系统中完成支付",
+    "pendingActivationTitle": "等待激活",
+    "pendingActivationDesc": "收件人有活跃订阅，礼物等待激活。",
+    "failedTitle": "错误",
+    "failedDesc": "礼物发送失败，请重试。",
+    "backToGift": "返回",
+    "backToDashboard": "返回首页",
+    "tryAgain": "重试",
+    "pollTimeout": "处理时间超出预期",
+    "pollTimeoutDesc": "请稍后再查看状态",
+    "pollErrorTitle": "无法检查礼物状态",
+    "pollErrorDesc": "您的购买已成功。请在仪表板上查看详情。",
+    "retry": "再次检查",
+    "notFound": "未找到礼物配置",
+    "noToken": "无效链接",
+    "noTokenDesc": "此礼物链接无效或已过期。",
+    "days": "天",
+    "tariff": "套餐",
+    "period": "时长",
+    "giftMessageLabel": "消息",
+    "recipientLabel": "收件人",
+    "featureDisabled": "礼物功能暂时不可用",
+    "redirecting": "正在跳转...",
+    "pending": {
+      "title": "您收到了一份礼物！",
+      "from": "来自 {{sender}}",
+      "activate": "激活"
+    },
+    "warning": {
+      "telegram_unresolvable": "无法验证此 Telegram 用户名。收件人可能不会收到礼物通知。"
     }
   }
 }

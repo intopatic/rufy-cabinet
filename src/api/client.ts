@@ -69,17 +69,20 @@ const AUTH_ENDPOINTS = [
   '/cabinet/auth/telegram',
   '/cabinet/auth/telegram/widget',
   '/cabinet/auth/email/login',
-  '/cabinet/auth/email/register',
+  '/cabinet/auth/email/register/standalone',
   '/cabinet/auth/email/verify',
   '/cabinet/auth/refresh',
   '/cabinet/auth/password/forgot',
   '/cabinet/auth/password/reset',
   '/cabinet/auth/oauth/',
+  '/cabinet/auth/merge/',
+  '/cabinet/auth/account/link/server-complete',
+  '/cabinet/landing/',
 ];
 
 function isAuthEndpoint(url: string | undefined): boolean {
   if (!url) return false;
-  return AUTH_ENDPOINTS.some((endpoint) => url.includes(endpoint));
+  return AUTH_ENDPOINTS.some((endpoint) => url.startsWith(endpoint));
 }
 
 // Request interceptor - add auth token with expiration check
@@ -89,17 +92,21 @@ apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig) =>
   if (!isAuthEndpoint(config.url)) {
     let token = tokenStorage.getAccessToken();
 
-    // Проверяем срок действия токена перед запросом
     if (token && isTokenExpired(token)) {
-      // Используем централизованный менеджер для refresh
+      // Access token expired — try refresh
       const newToken = await tokenRefreshManager.refreshAccessToken();
       if (newToken) {
         token = newToken;
       } else {
-        // Refresh не удался - редирект на логин
         tokenStorage.clearTokens();
         safeRedirectToLogin();
         return config;
+      }
+    } else if (!token && tokenStorage.getRefreshToken()) {
+      // No access token (e.g. tab reopen) but refresh token exists — restore session
+      const newToken = await tokenRefreshManager.refreshAccessToken();
+      if (newToken) {
+        token = newToken;
       }
     }
 
@@ -212,15 +219,10 @@ apiClient.interceptors.response.use(
     // Если получили 401 и ещё не пробовали refresh (на случай если проверка exp не сработала)
     if (error.response?.status === 401 && !originalRequest._retry) {
       // Не обрабатываем 401 для авторизационных endpoints - пусть ошибка дойдет до компонента
-      const authEndpoints = [
-        '/cabinet/auth/email/login',
-        '/cabinet/auth/telegram',
-        '/cabinet/auth/telegram/widget',
-      ];
       const requestUrl = originalRequest.url || '';
-      const isAuthEndpoint = authEndpoints.some((endpoint) => requestUrl.includes(endpoint));
+      const isLoginEndpoint = isAuthEndpoint(requestUrl);
 
-      if (isAuthEndpoint) {
+      if (isLoginEndpoint) {
         // Пробрасываем ошибку в компонент для показа сообщения пользователю
         return Promise.reject(error);
       }

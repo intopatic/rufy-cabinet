@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, Link } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,7 @@ import CampaignBonusNotifier from '@/components/CampaignBonusNotifier';
 import SuccessNotificationModal from '@/components/SuccessNotificationModal';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import TicketNotificationBell from '@/components/TicketNotificationBell';
+import { SubscriptionIcon, GiftIcon } from '@/components/icons';
 
 import { MobileBottomNav } from './MobileBottomNav';
 import { AppHeader } from './AppHeader';
@@ -202,7 +203,7 @@ export function AppShell({ children }: AppShellProps) {
 
   // Extracted hooks
   const { appName, logoLetter, hasCustomLogo, logoUrl } = useBranding();
-  const { referralEnabled, wheelEnabled, hasContests, hasPolls } = useFeatureFlags();
+  const { referralEnabled, wheelEnabled, hasContests, hasPolls, giftEnabled } = useFeatureFlags();
   useScrollRestoration();
 
   // Theme toggle visibility
@@ -252,6 +253,7 @@ export function AppShell({ children }: AppShellProps) {
   // Desktop navigation items
   const desktopNavItems = [
     { path: '/', label: t('nav.dashboard'), icon: HomeIcon },
+    { path: '/subscription', label: t('nav.subscription'), icon: SubscriptionIcon },
     { path: '/balance', label: t('nav.balance'), icon: CreditCardIcon },
     { path: '/support', label: t('nav.support'), icon: ChatIcon },
     { path: '/info', label: t('nav.info'), icon: InfoIcon },
@@ -267,6 +269,31 @@ export function AppShell({ children }: AppShellProps) {
     haptic.impact('light');
   };
 
+  // Desktop nav scroll fade indicators
+  const navRef = useRef<HTMLElement>(null);
+  const [navCanScrollLeft, setNavCanScrollLeft] = useState(false);
+  const [navCanScrollRight, setNavCanScrollRight] = useState(false);
+
+  const updateNavScroll = useCallback(() => {
+    const el = navRef.current;
+    if (!el) return;
+    setNavCanScrollLeft(el.scrollLeft > 2);
+    setNavCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+    updateNavScroll();
+    el.addEventListener('scroll', updateNavScroll, { passive: true });
+    const ro = new ResizeObserver(updateNavScroll);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener('scroll', updateNavScroll);
+      ro.disconnect();
+    };
+  }, [updateNavScroll]);
+
   // Calculate header height based on fullscreen mode (only on mobile Telegram)
   // On iOS: contentSafeAreaInset.top includes status bar + dynamic island + Telegram header
   // On Android: safeAreaInset.top only includes status bar, need to add Telegram header height (~48px)
@@ -278,7 +305,7 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="min-h-screen">
-      {/* Animated background */}
+      {/* Animated background renders via portal on document.body at z-index: -1 */}
       <BackgroundRenderer />
 
       {/* Global components */}
@@ -287,7 +314,7 @@ export function AppShell({ children }: AppShellProps) {
       <SuccessNotificationModal />
 
       {/* Desktop Header */}
-      <header className="fixed left-0 right-0 top-0 z-50 hidden border-b border-dark-800/50 bg-dark-950/80 backdrop-blur-xl lg:block">
+      <header className="fixed left-0 right-0 top-0 z-50 hidden border-b border-dark-800/50 bg-dark-950/95 lg:block">
         <div className="mx-auto grid h-14 max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-4 px-6">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5" onClick={handleNavClick}>
@@ -315,58 +342,89 @@ export function AppShell({ children }: AppShellProps) {
           </Link>
 
           {/* Center Navigation */}
-          <nav className="flex items-center justify-center gap-1">
-            {desktopNavItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={handleNavClick}
-                className={cn(
-                  'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                  isActive(item.path)
-                    ? 'bg-dark-800 text-dark-50'
-                    : 'text-dark-400 hover:bg-dark-800/50 hover:text-dark-200',
-                )}
-              >
-                <item.icon className="h-4 w-4" />
-                <span>{item.label}</span>
-              </Link>
-            ))}
-            {referralEnabled && (
-              <Link
-                to="/referral"
-                onClick={handleNavClick}
-                className={cn(
-                  'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                  isActive('/referral')
-                    ? 'bg-dark-800 text-dark-50'
-                    : 'text-dark-400 hover:bg-dark-800/50 hover:text-dark-200',
-                )}
-              >
-                <UsersIcon className="h-4 w-4" />
-                <span>{t('nav.referral')}</span>
-              </Link>
-            )}
-            {isAdmin && (
-              <>
-                {/* Separator before admin */}
-                <div className="mx-2 h-5 w-px bg-dark-700" />
+          <div className="relative min-w-0">
+            {/* Left fade */}
+            <div
+              className={cn(
+                'pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-6 bg-gradient-to-r from-dark-950/95 to-transparent transition-opacity duration-200',
+                navCanScrollLeft ? 'opacity-100' : 'opacity-0',
+              )}
+            />
+            {/* Right fade */}
+            <div
+              className={cn(
+                'pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-6 bg-gradient-to-l from-dark-950/95 to-transparent transition-opacity duration-200',
+                navCanScrollRight ? 'opacity-100' : 'opacity-0',
+              )}
+            />
+            <nav ref={navRef} className="scrollbar-hide flex items-center gap-1 overflow-x-auto">
+              {desktopNavItems.map((item) => (
                 <Link
-                  to="/admin"
+                  key={item.path}
+                  to={item.path}
                   onClick={handleNavClick}
                   className={cn(
-                    'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                    location.pathname.startsWith('/admin')
-                      ? 'bg-warning-500/10 text-warning-400'
-                      : 'text-warning-500/70 hover:bg-warning-500/10 hover:text-warning-400',
+                    'flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                    isActive(item.path)
+                      ? 'bg-dark-800 text-dark-50'
+                      : 'text-dark-400 hover:bg-dark-800/50 hover:text-dark-200',
                   )}
                 >
-                  <ShieldIcon className="h-4 w-4" />
-                  <span>{t('admin.nav.title')}</span>
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
                 </Link>
-              </>
-            )}
-          </nav>
+              ))}
+              {referralEnabled && (
+                <Link
+                  to="/referral"
+                  onClick={handleNavClick}
+                  className={cn(
+                    'flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                    isActive('/referral')
+                      ? 'bg-dark-800 text-dark-50'
+                      : 'text-dark-400 hover:bg-dark-800/50 hover:text-dark-200',
+                  )}
+                >
+                  <UsersIcon className="h-4 w-4" />
+                  <span>{t('nav.referral')}</span>
+                </Link>
+              )}
+              {giftEnabled && (
+                <Link
+                  to="/gift"
+                  onClick={handleNavClick}
+                  className={cn(
+                    'flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                    isActive('/gift')
+                      ? 'bg-dark-800 text-dark-50'
+                      : 'text-dark-400 hover:bg-dark-800/50 hover:text-dark-200',
+                  )}
+                >
+                  <GiftIcon className="h-4 w-4" />
+                  <span>{t('nav.gift')}</span>
+                </Link>
+              )}
+              {isAdmin && (
+                <>
+                  {/* Separator before admin */}
+                  <div className="mx-2 h-5 w-px shrink-0 bg-dark-700" />
+                  <Link
+                    to="/admin"
+                    onClick={handleNavClick}
+                    className={cn(
+                      'flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      location.pathname.startsWith('/admin')
+                        ? 'bg-warning-500/10 text-warning-400'
+                        : 'text-warning-500/70 hover:bg-warning-500/10 hover:text-warning-400',
+                    )}
+                  >
+                    <ShieldIcon className="h-4 w-4" />
+                    <span>{t('admin.nav.title')}</span>
+                  </Link>
+                </>
+              )}
+            </nav>
+          </div>
 
           {/* Right side actions */}
           <div className="flex items-center justify-end gap-2">
@@ -376,7 +434,7 @@ export function AppShell({ children }: AppShellProps) {
                 toggleTheme();
               }}
               className={cn(
-                'rounded-xl border border-dark-700/50 bg-dark-800/50 p-2 text-dark-400 transition-all duration-200 hover:bg-dark-700 hover:text-accent-400',
+                'rounded-xl border border-dark-700/50 bg-dark-800/50 p-2 text-dark-400 transition-colors duration-200 hover:bg-dark-700 hover:text-accent-400',
                 !canToggleTheme && 'pointer-events-none invisible',
               )}
               title={isDark ? t('theme.light') || 'Light mode' : t('theme.dark') || 'Dark mode'}
@@ -390,7 +448,7 @@ export function AppShell({ children }: AppShellProps) {
                 haptic.impact('light');
                 logout();
               }}
-              className="rounded-xl border border-dark-700/50 bg-dark-800/50 p-2 text-dark-400 transition-all duration-200 hover:bg-dark-700 hover:text-accent-400"
+              className="rounded-xl border border-dark-700/50 bg-dark-800/50 p-2 text-dark-400 transition-colors duration-200 hover:bg-dark-700 hover:text-accent-400"
               title={t('nav.logout')}
             >
               <LogoutIcon className="h-5 w-5" />
@@ -413,6 +471,7 @@ export function AppShell({ children }: AppShellProps) {
         referralEnabled={referralEnabled}
         hasContests={hasContests}
         hasPolls={hasPolls}
+        giftEnabled={giftEnabled}
       />
 
       {/* Desktop spacer */}

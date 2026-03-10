@@ -127,12 +127,13 @@ export default function Login() {
       const { authorize_url, state } = await authApi.getOAuthAuthorizeUrl(provider);
 
       // Validate redirect URL — only allow HTTPS to prevent open redirect
+      let parsed: URL;
       try {
-        const parsed = new URL(authorize_url);
-        if (parsed.protocol !== 'https:') {
-          throw new Error('Invalid OAuth redirect URL');
-        }
+        parsed = new URL(authorize_url);
       } catch {
+        throw new Error('Invalid OAuth redirect URL');
+      }
+      if (parsed.protocol !== 'https:') {
         throw new Error('Invalid OAuth redirect URL');
       }
 
@@ -484,10 +485,7 @@ export default function Login() {
                   </p>
                 </div>
               ) : (
-                <TelegramLoginButton
-                  botUsername={botUsername}
-                  referralCode={referralCode || undefined}
-                />
+                <TelegramLoginButton referralCode={referralCode || undefined} />
               )}
             </div>
 

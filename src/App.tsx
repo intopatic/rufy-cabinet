@@ -9,6 +9,7 @@ import {
   ChannelSubscriptionScreen,
   BlacklistedScreen,
 } from './components/blocking';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { PermissionRoute } from '@/components/auth/PermissionRoute';
 import { saveReturnUrl } from './utils/token';
 import { useAnalyticsCounters } from './hooks/useAnalyticsCounters';
@@ -26,6 +27,7 @@ import Dashboard from './pages/Dashboard';
 
 // User pages - lazy load
 const Subscription = lazy(() => import('./pages/Subscription'));
+const SubscriptionPurchase = lazy(() => import('./pages/SubscriptionPurchase'));
 const Balance = lazy(() => import('./pages/Balance'));
 const Referral = lazy(() => import('./pages/Referral'));
 const Support = lazy(() => import('./pages/Support'));
@@ -34,9 +36,19 @@ const Contests = lazy(() => import('./pages/Contests'));
 const Polls = lazy(() => import('./pages/Polls'));
 const Info = lazy(() => import('./pages/Info'));
 const Wheel = lazy(() => import('./pages/Wheel'));
+const GiftSubscription = lazy(() => import('./pages/GiftSubscription'));
+const GiftResult = lazy(() => import('./pages/GiftResult'));
 const Connection = lazy(() => import('./pages/Connection'));
+const ConnectionQR = lazy(() => import('./pages/ConnectionQR'));
+const QuickPurchase = lazy(() => import('./pages/QuickPurchase'));
+const PurchaseSuccess = lazy(() => import('./pages/PurchaseSuccess'));
+const AutoLogin = lazy(() => import('./pages/AutoLogin'));
 const TopUpMethodSelect = lazy(() => import('./pages/TopUpMethodSelect'));
 const TopUpAmount = lazy(() => import('./pages/TopUpAmount'));
+const TopUpResult = lazy(() => import('./pages/TopUpResult'));
+const ConnectedAccounts = lazy(() => import('./pages/ConnectedAccounts'));
+const LinkTelegramCallback = lazy(() => import('./pages/LinkTelegramCallback'));
+const MergeAccounts = lazy(() => import('./pages/MergeAccounts'));
 
 // Admin pages - lazy load (only for admins)
 const AdminPanel = lazy(() => import('./pages/AdminPanel'));
@@ -85,6 +97,7 @@ const AdminRemnawave = lazy(() => import('./pages/AdminRemnawave'));
 const AdminRemnawaveSquadDetail = lazy(() => import('./pages/AdminRemnawaveSquadDetail'));
 const AdminEmailTemplates = lazy(() => import('./pages/AdminEmailTemplates'));
 const AdminTrafficUsage = lazy(() => import('./pages/AdminTrafficUsage'));
+const AdminSalesStats = lazy(() => import('./pages/AdminSalesStats'));
 const AdminUpdates = lazy(() => import('./pages/AdminUpdates'));
 const AdminUserDetail = lazy(() => import('./pages/AdminUserDetail'));
 const AdminBroadcastDetail = lazy(() => import('./pages/AdminBroadcastDetail'));
@@ -98,8 +111,17 @@ const AdminRoleAssign = lazy(() => import('./pages/AdminRoleAssign'));
 const AdminPolicies = lazy(() => import('./pages/AdminPolicies'));
 const AdminPolicyEdit = lazy(() => import('./pages/AdminPolicyEdit'));
 const AdminAuditLog = lazy(() => import('./pages/AdminAuditLog'));
+const AdminLandings = lazy(() => import('./pages/AdminLandings'));
+const AdminLandingEditor = lazy(() => import('./pages/AdminLandingEditor'));
+const AdminLandingStats = lazy(() => import('./pages/AdminLandingStats'));
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+function ProtectedRoute({
+  children,
+  withLayout = true,
+}: {
+  children: React.ReactNode;
+  withLayout?: boolean;
+}) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const isLoading = useAuthStore((state) => state.isLoading);
   const location = useLocation();
@@ -109,12 +131,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!isAuthenticated) {
-    // Сохраняем текущий URL для возврата после авторизации
     saveReturnUrl();
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 
-  return <Layout>{children}</Layout>;
+  return withLayout ? <Layout>{children}</Layout> : <>{children}</>;
 }
 
 function AdminRoute({ children }: { children: React.ReactNode }) {
@@ -128,7 +149,6 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!isAuthenticated) {
-    // Сохраняем текущий URL для возврата после авторизации
     saveReturnUrl();
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
@@ -180,6 +200,44 @@ function App() {
         <Route path="/auth/oauth/callback" element={<OAuthCallback />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/merge/:mergeToken"
+          element={
+            <LazyPage>
+              <MergeAccounts />
+            </LazyPage>
+          }
+        />
+        <Route
+          path="/buy/success/:token"
+          element={
+            <ErrorBoundary level="app">
+              <LazyPage>
+                <PurchaseSuccess />
+              </LazyPage>
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/buy/:slug"
+          element={
+            <ErrorBoundary level="app">
+              <LazyPage>
+                <QuickPurchase />
+              </LazyPage>
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/auto-login"
+          element={
+            <ErrorBoundary level="app">
+              <LazyPage>
+                <AutoLogin />
+              </LazyPage>
+            </ErrorBoundary>
+          }
+        />
 
         {/* Protected routes */}
         <Route
@@ -203,6 +261,16 @@ function App() {
           }
         />
         <Route
+          path="/subscription/purchase"
+          element={
+            <ProtectedRoute>
+              <LazyPage>
+                <SubscriptionPurchase />
+              </LazyPage>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/balance"
           element={
             <ProtectedRoute>
@@ -219,6 +287,18 @@ function App() {
               <LazyPage>
                 <TopUpMethodSelect />
               </LazyPage>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/balance/top-up/result"
+          element={
+            <ProtectedRoute withLayout={false}>
+              <ErrorBoundary level="app">
+                <LazyPage>
+                  <TopUpResult />
+                </LazyPage>
+              </ErrorBoundary>
             </ProtectedRoute>
           }
         />
@@ -283,6 +363,26 @@ function App() {
           }
         />
         <Route
+          path="/profile/accounts"
+          element={
+            <ProtectedRoute>
+              <LazyPage>
+                <ConnectedAccounts />
+              </LazyPage>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/auth/link/telegram/callback"
+          element={
+            <ProtectedRoute>
+              <LazyPage>
+                <LinkTelegramCallback />
+              </LazyPage>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/contests"
           element={
             <ProtectedRoute>
@@ -318,6 +418,40 @@ function App() {
             <ProtectedRoute>
               <LazyPage>
                 <Wheel />
+              </LazyPage>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gift"
+          element={
+            <ErrorBoundary level="app">
+              <ProtectedRoute>
+                <LazyPage>
+                  <GiftSubscription />
+                </LazyPage>
+              </ProtectedRoute>
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/gift/result"
+          element={
+            <ErrorBoundary level="app">
+              <ProtectedRoute>
+                <LazyPage>
+                  <GiftResult />
+                </LazyPage>
+              </ProtectedRoute>
+            </ErrorBoundary>
+          }
+        />
+        <Route
+          path="/connection/qr"
+          element={
+            <ProtectedRoute>
+              <LazyPage>
+                <ConnectionQR />
               </LazyPage>
             </ProtectedRoute>
           }
@@ -420,6 +554,46 @@ function App() {
             <PermissionRoute permission="tariffs:read">
               <LazyPage>
                 <AdminTariffCreate />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/landings"
+          element={
+            <PermissionRoute permission="landings:read">
+              <LazyPage>
+                <AdminLandings />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/landings/create"
+          element={
+            <PermissionRoute permission="landings:create">
+              <LazyPage>
+                <AdminLandingEditor />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/landings/:id/edit"
+          element={
+            <PermissionRoute permission="landings:edit">
+              <LazyPage>
+                <AdminLandingEditor />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/landings/:id/stats"
+          element={
+            <PermissionRoute permission="landings:read">
+              <LazyPage>
+                <AdminLandingStats />
               </LazyPage>
             </PermissionRoute>
           }
@@ -720,6 +894,16 @@ function App() {
             <PermissionRoute permission="traffic:read">
               <LazyPage>
                 <AdminTrafficUsage />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/sales-stats"
+          element={
+            <PermissionRoute permission="sales_stats:read">
+              <LazyPage>
+                <AdminSalesStats />
               </LazyPage>
             </PermissionRoute>
           }
