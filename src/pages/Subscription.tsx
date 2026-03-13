@@ -752,7 +752,7 @@ export default function Subscription() {
               )}
 
               {/* ─── Subscription URL ─── */}
-              {subscription.subscription_url && !subscription.hide_subscription_link && (
+{/*              {subscription.subscription_url && !subscription.hide_subscription_link && (
                 <div className="mb-5 flex gap-2">
                   <code
                     className="scrollbar-hide flex-1 overflow-x-auto break-all rounded-[10px] px-3 py-2 font-mono text-[11px] text-dark-50/30"
@@ -778,7 +778,7 @@ export default function Subscription() {
                     {copied ? <CheckIcon /> : <CopyIcon />}
                   </button>
                 </div>
-              )}
+              )}*/}
 
               {/* ─── Countdown ─── */}
               <div className="mb-5">
