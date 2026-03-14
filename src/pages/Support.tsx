@@ -681,7 +681,7 @@ export default function Support() {
                             : 'border border-accent-500/20 bg-accent-500/10'
                         }`}
                       >
-                        <div className="mb-2 flex items-center justify-between">
+                        <div className="mb-2 flex items-center justify-between gap-2">
                           <span
                             className={`text-xs font-medium ${msg.is_from_admin ? 'text-dark-400' : 'text-accent-400'}`}
                           >
