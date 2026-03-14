@@ -13,7 +13,7 @@ import InsufficientBalancePrompt from '../components/InsufficientBalancePrompt';
 import { useCurrency } from '../hooks/useCurrency';
 import { useCloseOnSuccessNotification } from '../store/successNotification';
 import PurchaseCTAButton from '../components/subscription/PurchaseCTAButton';
-import { CopyIcon, CheckIcon } from '../components/icons';
+// import { CopyIcon, CheckIcon } from '../components/icons';
 import {
   getErrorMessage,
   getInsufficientBalanceError,
@@ -169,7 +169,7 @@ export default function Subscription() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
   const g = getGlassColors(isDark);
-  const [copied, setCopied] = useState(false);
+  // const [copied, setCopied] = useState(false);
 
   // Helper to format price from kopeks
   const formatPrice = (kopeks: number) => `${formatAmount(kopeks / 100)} ${currencySymbol}`;
@@ -417,13 +417,13 @@ export default function Subscription() {
     refreshTrafficMutation.mutate();
   }, [subscription, refreshTrafficMutation]);
 
-  const copyUrl = () => {
-    if (subscription?.subscription_url) {
-      navigator.clipboard.writeText(subscription.subscription_url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
+  // const copyUrl = () => {
+  //   if (subscription?.subscription_url) {
+  //     navigator.clipboard.writeText(subscription.subscription_url);
+  //     setCopied(true);
+  //     setTimeout(() => setCopied(false), 2000);
+  //   }
+  // };
 
   if (isLoading) {
     return (
