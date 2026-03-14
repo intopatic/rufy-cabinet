@@ -667,38 +667,33 @@ export default function Support() {
               </div>
 
               {/* Messages */}
-              {detailLoading ? (
-                <div className="flex items-center justify-center py-12">
-                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent-500 border-t-transparent" />
-                </div>
-              ) : ticketDetail?.messages ? (
-                <div className="scrollbar-hide mb-6 max-h-96 flex-1 space-y-4 overflow-y-auto">
-                  {ticketDetail.messages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className={`rounded-xl p-4 ${
-                        msg.is_from_admin
-                          ? 'ml-4 border border-accent-500/20 bg-accent-500/10'
-                          : 'mr-4 border border-dark-700/30 bg-dark-800/50'
-                      }`}
-                    >
-                      <div className="mb-2 flex items-center justify-between">
-                        <span
-                          className={`text-xs font-medium ${msg.is_from_admin ? 'text-accent-400' : 'text-dark-400'}`}
-                        >
-                          {msg.is_from_admin ? t('support.supportTeam') : t('support.you')}
-                        </span>
-                        <span className="text-xs text-dark-500">
-                          {new Date(msg.created_at).toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="whitespace-pre-wrap text-dark-200">{msg.message_text}</div>
-                      {/* Display media if present */}
-                      <MessageMedia message={msg} t={t} />
+              {ticketDetail.messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex ${msg.is_from_admin ? 'justify-start' : 'justify-end'}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-xl p-4 ${
+                      msg.is_from_admin
+                        ? 'border border-dark-700/30 bg-dark-800/50'   // поддержка – серая, слева
+                        : 'border border-accent-500/20 bg-accent-500/10' // пользователь – синяя, справа
+                    }`}
+                  >
+                    <div className="mb-2 flex items-center justify-between">
+                      <span
+                        className={`text-xs font-medium ${msg.is_from_admin ? 'text-dark-400' : 'text-accent-400'}`}
+                      >
+                        {msg.is_from_admin ? t('support.supportTeam') : t('support.you')}
+                      </span>
+                      <span className="text-xs text-dark-500">
+                        {new Date(msg.created_at).toLocaleString()}
+                      </span>
                     </div>
-                  ))}
+                    <div className="whitespace-pre-wrap text-dark-200">{msg.message_text}</div>
+                    <MessageMedia message={msg} t={t} />
+                  </div>
                 </div>
-              ) : null}
+              ))}
 
               {/* Reply Form */}
               {ticketDetail?.status !== 'closed' && !ticketDetail?.is_reply_blocked && (
