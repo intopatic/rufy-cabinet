@@ -207,7 +207,7 @@ export default function Support() {
     enabled: supportConfig?.tickets_enabled === true,
   });
 
-  const { data: ticketDetail, isLoading: detailLoading } = useQuery({
+  const { data: ticketDetail } = useQuery({
     queryKey: ['ticket', selectedTicket?.id],
     queryFn: () => ticketsApi.getTicket(selectedTicket!.id),
     enabled: !!selectedTicket,
