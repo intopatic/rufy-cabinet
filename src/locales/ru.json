@@ -918,7 +918,7 @@
     "repliesDisabled": "Ответы на это обращение отключены",
     "status": {
       "open": "Открыт",
-      "answered": "Отвечен",
+      "answered": "Новое",
       "pending": "Ожидает",
       "closed": "Закрыт"
     },
