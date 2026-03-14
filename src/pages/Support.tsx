@@ -667,33 +667,37 @@ export default function Support() {
               </div>
 
               {/* Messages */}
-              {ticketDetail.messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.is_from_admin ? 'justify-start' : 'justify-end'}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-xl p-4 ${
-                      msg.is_from_admin
-                        ? 'border border-dark-700/30 bg-dark-800/50'   // поддержка – серая, слева
-                        : 'border border-accent-500/20 bg-accent-500/10' // пользователь – синяя, справа
-                    }`}
-                  >
-                    <div className="mb-2 flex items-center justify-between">
-                      <span
-                        className={`text-xs font-medium ${msg.is_from_admin ? 'text-dark-400' : 'text-accent-400'}`}
+              {ticketDetail?.messages && (
+                <div className="scrollbar-hide mb-6 max-h-96 flex-1 space-y-4 overflow-y-auto">
+                  {ticketDetail.messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`flex ${msg.is_from_admin ? 'justify-start' : 'justify-end'}`}
+                    >
+                      <div
+                        className={`max-w-[80%] rounded-xl p-4 ${
+                          msg.is_from_admin
+                            ? 'border border-dark-700/30 bg-dark-800/50'
+                            : 'border border-accent-500/20 bg-accent-500/10'
+                        }`}
                       >
-                        {msg.is_from_admin ? t('support.supportTeam') : t('support.you')}
-                      </span>
-                      <span className="text-xs text-dark-500">
-                        {new Date(msg.created_at).toLocaleString()}
-                      </span>
+                        <div className="mb-2 flex items-center justify-between">
+                          <span
+                            className={`text-xs font-medium ${msg.is_from_admin ? 'text-dark-400' : 'text-accent-400'}`}
+                          >
+                            {msg.is_from_admin ? t('support.supportTeam') : t('support.you')}
+                          </span>
+                          <span className="text-xs text-dark-500">
+                            {new Date(msg.created_at).toLocaleString()}
+                          </span>
+                        </div>
+                        <div className="whitespace-pre-wrap text-dark-200">{msg.message_text}</div>
+                        <MessageMedia message={msg} t={t} />
+                      </div>
                     </div>
-                    <div className="whitespace-pre-wrap text-dark-200">{msg.message_text}</div>
-                    <MessageMedia message={msg} t={t} />
-                  </div>
+                  ))}
                 </div>
-              ))}
+              )}
 
               {/* Reply Form */}
               {ticketDetail?.status !== 'closed' && !ticketDetail?.is_reply_blocked && (
